@@ -1,0 +1,97 @@
+﻿@model PagingList<Travel>
+
+<div class="container text-center">
+    <h1 class="text-center">Create Travel</h1>
+    <a class="btn btn-primary" asp-controller="Travel" asp-action="Create">ADD</a>
+</div>
+<h1 class="text-center">List of Travels</h1>
+<div class="container text-center text-decoration-none"><a asp-action="CreateApi">Dodaj książkę (wersja z API)</a></div>
+<div class="container text-center">
+    <table class="table">
+        <tr>
+            <th>Name</th>
+            <th>Period of travel </th>
+            <th>Start location</th>
+            <th>End location</th>
+            <th>Number of passengers</th>
+            <th>Guide</th>
+            <th>Actions</th>
+        </tr>
+        @foreach (var item in Model.Data)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Start_Date - @item.End_Date</td>
+                <td>@item.Start_Place</td>
+                <td>@item.End_Place</td>
+                <td>@item.Participants</td>
+                <td>@item.Guide</td>
+                <td>
+                    <a class="btn btn-primary" asp-action="Update" asp-route-id="@item.Id">Edit</a>
+                    <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    <a class="btn btn-primary text-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Data.GetEnumerator().Current.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Data.GetEnumerator().Current.Guide)
+            </th>
+            <th>
+                Akcje
+            </th>
+            <th></th>
+        </tr>
+        ...
+        <nav aria-label="Books page navigation">
+            <ul class="pagination">
+                @if (Model.IsPrevious)
+                {
+                    <li class="page-item">
+                        <a class="page-link"
+                           asp-controller="Travel"
+                           asp-action="PagedIndex"
+                           asp-route-page="@(Model.Page - 1)"
+                           asp-route-size="@Model.Size">
+                            Poprzednia
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link">Poprzednia</a>
+                    </li>
+                }
+                <li class="page-item disabled">
+                    <a class="page-link">@Model.Page</a>
+                </li>
+                @if (Model.IsNext)
+                {
+                    <li class="page-item">
+                        <a class="page-link"
+                           asp-controller="Travel"
+                           asp-action="PagedIndex"
+                           asp-route-page="@(Model.Page + 1)"
+                           asp-route-size="@Model.Size">
+                            Następna
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link">Następna</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+     </table>

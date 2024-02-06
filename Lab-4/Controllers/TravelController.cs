@@ -80,5 +80,27 @@ namespace Laboratorium_nr3.Controllers
 
             return View(travelDetails);
         }
+
+        [HttpGet]
+        public IActionResult CreateApi()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CreateApi(Travel model)
+        {
+            if (ModelState.IsValid)
+            {
+                _travelService.Add(model);
+                return RedirectToAction("Index");
+            }
+            return View(model);
+        }
+        public IActionResult PagedIndex([FromQuery] int page = 1, [FromQuery] int size = 5)
+        {
+            return View(_travelService.FindPage(page, size));
+        }
     }
 }

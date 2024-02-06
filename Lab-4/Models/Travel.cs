@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Data.Entities;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
 namespace Laboratorium_nr3.Models
@@ -17,5 +20,8 @@ namespace Laboratorium_nr3.Models
         public string? End_Place { get; set; }
         public int Participants { get; set; }
         public string Guide { get; set; }
+        public int? OrganizationId { get; set; }
+        [ValidateNever]
+        public List<SelectListItem> OrganizationList { get; set; }
     }
 }

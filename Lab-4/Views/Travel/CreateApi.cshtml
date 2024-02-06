@@ -1,0 +1,75 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model Travel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<h1>Dodaj nowy kontakt</h1>
+<form asp-controller="Travel" asp-action="CreateApi" method="post">
+    <div class="form-grup">
+        <label asp-for="Name"></label>
+        <div>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <input class="form-control" asp-for="Name" />
+    </div>
+    <div class="form-grup">
+        <label asp-for="Guide"></label>
+        <div>
+            <span asp-validation-for="Guide" class="text-danger"></span>
+        </div>
+        <input class="form-control" asp-for="Guide" />
+    </div>
+    <div class="form-grup">
+        <label asp-for="Participants"></label>
+        <div>
+            <span asp-validation-for="Participants" class="text-danger"></span>
+        </div>
+        <input class="form-control" asp-for="Participants" />
+    </div>
+    <div class="form-group">
+        <label for="filter">Filtr organizacji</label>
+        <input class="form-control mb-3" type="text" name="filter" id="filter" />
+        <label asp-for="OrganizationId"></label>
+        <select class="form-control mb-3" asp-for="OrganizationId"></select>
+    </div>
+    <div class="form-group">
+        <button class="btn btn-primary" type="submit">Zapisz</button>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        let select = document.getElementById("OrganizationId");
+        let filter = document.getElementById("filter");
+        filter.onchange = function (e) {
+            if (filter.value.lenght == 0) {
+                return;
+            }
+            fetch(`/api/contacts?filter=${filter.value}`)
+                .then(response => {
+                    if (response.ok) {
+                        return response.json()
+                    }
+                    throw "No OK, actual status " + response.status;
+                })
+                .then(json => {
+                    select.innerHTML = '';
+                    for (let item of json) {
+                        let option = document.createElement('option');
+                        option.setAttribute('value', item.id);
+                        option.innerText = item.title;
+                        select.appendChild(option);
+                    }
+                })
+                .catch(e => {
+                    console.log('Cant get data from api', e);
+                });
+        };
+    </script>
+}

@@ -1,4 +1,5 @@
-﻿using Laboratorium_nr3.Models;
+﻿using Data.Entities;
+using Laboratorium_nr3.Models;
 using System;
 using System.Linq;
 
@@ -40,5 +41,21 @@ public class EFTravelService : ITravelService
     public void Update(Travel travel)
     {
         _context.Travel.Update(TravelMapper.ToEntity(travel));
-    }  
+    }
+    public List<OrganizationEntity> FindAllOrganization()
+    {
+        return _context.Organization.ToList();
+    }
+    public PagingList<Travel> FindPage(int page, int size)
+    {
+        return PagingList<Travel>.Create(
+                (p, s) => (IEnumerable<Travel>)_context.Travel
+                        .OrderBy(b => b.Id)
+                        .Skip((p - 1) * size)
+                        .Take(s)
+                        .ToList(),
+                _context.Travel.Count(),
+                page,
+                size);
+    }
 }

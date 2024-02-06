@@ -28,8 +28,8 @@ namespace Laboratorium_nr3
             app.UseStaticFiles();
 
             app.UseRouting();
-
-            app.UseAuthorization();
+            app.UseMiddleware<LastVisitCookie>();
+            app.UseAuthentication();
 
             app.MapControllerRoute(
                 name: "default",
